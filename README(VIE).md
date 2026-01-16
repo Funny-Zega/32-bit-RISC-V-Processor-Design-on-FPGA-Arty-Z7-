@@ -1,5 +1,3 @@
-Dưới đây là phiên bản `README.md` bằng tiếng Việt, được viết chi tiết và chuyên nghiệp, phù hợp để trình bày trong đồ án môn học hoặc Portfolio cá nhân trên GitHub.
-
 ---
 
 # Bộ Xử Lý RV32IM Pipelined (RV32IM Pipelined Processor)
