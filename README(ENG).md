@@ -1,5 +1,3 @@
-Based on the code provided, here is a comprehensive `README.md` file written in English. It covers the architecture, file structure, and technical details of your RV32IM Pipelined Processor project.
-
 ---
 
 # RV32IM Pipelined Processor
