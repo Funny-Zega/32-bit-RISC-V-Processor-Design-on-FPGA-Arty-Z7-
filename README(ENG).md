@@ -1,5 +1,3 @@
----
-
 # RV32IM Pipelined Processor
 
 This repository contains a Verilog implementation of a 32-bit RISC-V processor (RV32IM). The design features a classic 5-stage pipeline extended with a complex multi-cycle hardware divider and a fast Carry Lookahead Adder. The processor handles data hazards via forwarding and control hazards via flushing, supporting the **M-Extension** (Multiplication and Division).
@@ -7,10 +5,10 @@ This repository contains a Verilog implementation of a 32-bit RISC-V processor (
 ## 📂 Project Structure
 
 | File Name | Description |
-| --- | --- |
-| **`DatapathPipelined.v`** | The core module. It contains the 5-stage pipeline logic (Fetch, Decode, Execute, Memory, Writeback), Hazard Detection Unit, Forwarding Unit, Register File, and the top-level `Processor` module. |
-| **`DividerUnsignedPipelined.v`** | An 8-stage pipelined hardware divider. It performs 32-bit division using a shift-subtract algorithm (4 iterations per stage). |
-| **`cla.v`** | A 32-bit Carry Lookahead Adder (CLA). Used by the ALU for high-speed addition and subtraction. |
+| :--- | :--- |
+| **`DatapathPipelined.v`** | The main file containing the **5-stage pipeline logic** (Fetch, Decode, Execute, Memory, Writeback), Hazard/Forwarding Units, and Register File. [cite_start]It also includes the **Data Memory** and the top-level **`Processor`** wrapper for simulation [cite: 227-241]. |
+| **`DividerUnsignedPipelined.v`** | An **8-stage pipelined hardware divider**. [cite_start]It performs 32-bit division using a shift-subtract algorithm (4 iterations per stage) [cite: 242-260]. |
+| **`cla.v`** | A 32-bit **Carry Lookahead Adder (CLA)**. [cite_start]Used by the ALU for high-speed addition and subtraction [cite: 1-25]. |
 | **`mem_initial_contents.hex`** | Hexadecimal machine code used to initialize the Instruction Memory for simulation/testing. |
 
 ## 🚀 Key Features
@@ -29,17 +27,15 @@ The processor implements the standard RISC-V stages:
 
 * **Multiplication (`MUL`, `MULH`, etc.):** Handled within the Execute stage.
 * **Division (`DIV`, `REM`, etc.):**
-* Utilizes a dedicated **8-stage Pipelined Divider** defined in `DividerUnsignedPipelined.v`.
-* Supports Signed and Unsigned division.
-* Includes a **Shadow Pipeline** in the Datapath to track divider instructions as they propagate, preventing structural hazards at the Writeback stage.
-
-
+    * Utilizes a dedicated **8-stage Pipelined Divider** defined in `DividerUnsignedPipelined.v`.
+    * Supports Signed and Unsigned division.
+    * [cite_start]Includes a **Shadow Pipeline** in the Datapath to track divider instructions as they propagate, preventing structural hazards at the Writeback stage [cite: 177-190].
 
 ### 3. Advanced Hazard Handling
 
-* **Data Hazards:** Solved using a **Forwarding Unit** that bypasses data from MEM or WB stages directly to the EX stage (ALU inputs).
+* [cite_start]**Data Hazards:** Solved using a **Forwarding Unit** that bypasses data from MEM, WB, or the **Divider Unit** directly to the EX stage (ALU inputs) [cite: 142-156].
 * **Load-Use Hazards:** Detects dependencies on a Load instruction and inserts a stall (bubble).
-* **Structural Hazards (Divider):** Logic is implemented to stall the pipeline if a division result clashes with a standard instruction writeback, or if division operands are not ready.
+* [cite_start]**Structural Hazards (Divider):** Logic is implemented to stall the pipeline if a division result clashes with a standard instruction writeback, or if division operands are not ready [cite: 76-81].
 * **Control Hazards:** Flushes the Fetch/Decode pipeline registers upon taking a Branch or Jump.
 
 ### 4. High-Performance Arithmetic
@@ -58,7 +54,6 @@ The processor supports the following opcode groups:
 * **M-Extension:** `MUL`, `MULH`, `MULHSU`, `MULHU`, `DIV`, `DIVU`, `REM`, `REMU`.
 * **System:** `ECALL` (mapped to `OpcodeEnviron` for halting simulation).
 
-
 ## 📐 Architecture Diagram (Text Concept)
 
 ```mermaid
@@ -73,11 +68,5 @@ graph TD
     Divider -- "Result (Latency 8)" --> Writeback
     end
     
-    ForwardingUnit --> Execute
+    ForwardingUnit -- "Bypass from MEM/WB/Div" --> Execute
     HazardUnit -- "Stall/Flush" --> Fetch & Decode
-
-```
-
----
-
-*This project demonstrates a complex digital design integrating standard pipelining with multi-cycle arithmetic units and rigorous hazard mitigation logic.*
