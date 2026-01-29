@@ -35,10 +35,10 @@ Sử dụng kiến trúc cộng nhìn trước số nhớ (CLA) 32-bit thay vì 
 
 ### 3.4. Hệ Thống Xử Lý Xung Đột (Advanced Hazard Unit)
 Hệ thống tự động đảm bảo tính toàn vẹn dữ liệu:
-* [cite_start]**Data Forwarding (Bypass):** Chuyển dữ liệu từ tầng MEM/WB quay ngược lại EX ngay lập tức, giải quyết Data Hazard mà không cần dừng pipeline [cite: 142-152].
+* **Data Forwarding (Bypass):** Chuyển dữ liệu từ tầng MEM/WB quay ngược lại EX ngay lập tức, giải quyết Data Hazard mà không cần dừng pipeline [cite: 142-152].
 * **Load-Use Hazard Detection:** Tự động chèn 1 chu kỳ Stall khi phát hiện lệnh sau phụ thuộc vào dữ liệu từ lệnh Load trước đó.
-* [cite_start]**Control Hazard Flushing:** Tự động hủy (Flush) các lệnh sai trong đường ống ngay lập tức khi gặp lệnh rẽ nhánh (Branch/Jump) [cite: 82, 89-90].
-* [cite_start]**Structural Hazard Handling:** Cơ chế trọng tài (arbiter) ngăn xung đột khi lệnh Chia và lệnh thường cùng muốn ghi vào Register File [cite: 76-81].
+* **Control Hazard Flushing:** Tự động hủy (Flush) các lệnh sai trong đường ống ngay lập tức khi gặp lệnh rẽ nhánh (Branch/Jump) [cite: 82, 89-90].
+* **Structural Hazard Handling:** Cơ chế trọng tài (arbiter) ngăn xung đột khi lệnh Chia và lệnh thường cùng muốn ghi vào Register File [cite: 76-81].
 
 ## 4. Cấu Trúc Mã Nguồn (Source Structure)
 
