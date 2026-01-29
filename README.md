@@ -69,25 +69,25 @@ sudo apt install -y autoconf automake autotools-dev curl libmpc-dev libmpfr-dev 
 
 ### Bước 2: Cài đặt RISC-V Toolchain (Lưu ý: Nếu bạn đã cài Toolchain rồi thì bỏ qua bước này. Bước này mất khoảng 30-45 phút)
 
-# Tải về tại thư mục Home
+#### Tải về tại thư mục Home
 cd ~
 git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git
 cd riscv-gnu-toolchain
 
-# Cấu hình và Biên dịch
+#### Cấu hình và Biên dịch
 ./configure --prefix=$HOME/riscv32 --with-arch=rv32im --with-abi=ilp32
 make -j$(nproc)
 
 ### Bước 3: Cấu hình đường dẫn (PATH)
-# Thêm vào file cấu hình (chỉ chạy 1 lần duy nhất)
+#### Thêm vào file cấu hình (chỉ chạy 1 lần duy nhất)
 echo 'export PATH=$HOME/riscv32/bin:$PATH' >> ~/.bashrc
 
-# Cập nhật ngay lập tức
+#### Cập nhật ngay lập tức
 source ~/.bashrc
 
 ### Bước 4: Cài đặt môi trường Python
 
-# Di chuyển vào thư mục dự án của bạn trước khi chạy
+#### Di chuyển vào thư mục dự án của bạn trước khi chạy
 python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
@@ -97,11 +97,11 @@ Hướng dẫn Chạy Test (Hằng ngày)
 Sau khi đã cài đặt môi trường thành công, đây là các bước để chạy kiểm thử mỗi khi bạn sửa code Verilog.
 
 ### Bước 5: Kích hoạt môi trường và chạy lệnh kiểm tra
-Mở Terminal (WSL) tại thư mục dự án và chạy:
+#### Mở Terminal (WSL) tại thư mục dự án và chạy:
 
 source .venv/bin/activate
 
-(Nếu dòng lệnh hiện chữ (.venv) ở đầu là thành công)
+##### (Nếu dòng lệnh hiện chữ (.venv) ở đầu là thành công)
 
 pytest -s testbench.py::runCocotbTestsProcessor
 
