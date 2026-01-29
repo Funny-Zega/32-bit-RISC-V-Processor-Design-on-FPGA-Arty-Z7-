@@ -104,9 +104,7 @@ Bạn hãy chạy lần lượt các bước sau trong Terminal (WSL/Ubuntu):
     
 ## 7. Kết Quả Kiểm Thử Mẫu (Sample Test Results)
 ```markdown
-## 7. Kết Quả Kiểm Thử Mẫu (Sample Test Results)
-<details>
-```text
+
 *****************************************************************************************
 ** TEST                            STATUS    SIM TIME (ns)   REAL TIME (s)   RATIO (ns/s)**
 *****************************************************************************************
