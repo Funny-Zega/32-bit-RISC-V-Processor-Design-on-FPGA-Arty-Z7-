@@ -59,21 +59,41 @@ Dữ liệu di chuyển qua các tầng xử lý như sau:
 5.  **WB (Writeback):** Mux lựa chọn kết quả từ ALU, Memory hoặc Divider Unit để ghi lại vào Register File.
 
 ## 6. Hướng Dẫn Cài Đặt & Mô Phỏng (Installation & Usage)
+# --- Bắt đầu quy trình cài đặt ---
 
-### Bước 1: Cài đặt công cụ
-Bạn cần cài đặt **Icarus Verilog** (để biên dịch) và **GTKWave** (để xem sóng).
-* **Linux:** `sudo apt install iverilog gtkwave`
-* **Windows:** Tải bộ cài tại [bleyer.org/icarus](http://bleyer.org/icarus/).
+# 1. Cập nhật hệ thống và cài đặt tất cả thư viện phụ thuộc cho Toolchain và Verilator
+sudo apt update && sudo apt install -y autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev ninja-build git cmake libglib2.0-dev libpixman-1-dev python3 python3-pip python3-venv verilator make
 
-### Bước 2: Chuẩn bị mã máy
-Đảm bảo file `mem_initial_contents.hex` nằm cùng thư mục với các file mã nguồn.
+# 2. Tải và biên dịch RISC-V GNU Toolchain (Lưu ý: Bước này tốn nhiều thời gian nhất)
+# Kiểm tra nếu chưa có thư mục toolchain thì mới tải về
+if [ ! -d "riscv-gnu-toolchain" ]; then
+    git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git
+fi
+cd riscv-gnu-toolchain
+# Cấu hình biên dịch cho kiến trúc RV32IM (Integer + Multiply) và ABI ilp32
+./configure --prefix=$HOME/riscv32 --with-arch=rv32im --with-abi=ilp32
+# Bắt đầu biên dịch đa luồng
+make -j$(nproc)
+cd .. # Quay trở lại thư mục dự án
 
-### Bước 3: Biên dịch và Chạy
-Mở terminal tại thư mục dự án và chạy lệnh:
+# 3. Thêm Toolchain vào biến môi trường (PATH) để hệ thống nhận diện lệnh riscv32-gcc
+# Lệnh này thêm vào file cấu hình để dùng được vĩnh viễn cho các lần sau
+if ! grep -q "$HOME/riscv32/bin" ~/.bashrc; then
+    echo 'export PATH=$HOME/riscv32/bin:$PATH' >> ~/.bashrc
+fi
+export PATH=$HOME/riscv32/bin:$PATH # Cập nhật ngay cho phiên hiện tại
 
-```bash
-# 1. Biên dịch toàn bộ source code
-iverilog -o cpu_core DatapathPipelined.v cla.v DividerUnsignedPipelined.v
+# 4. Kiểm tra cài đặt Toolchain
+riscv32-unknown-elf-gcc --version
 
-# 2. Chạy mô phỏng
-vvp cpu_core
+# 5. Thiết lập môi trường ảo Python và cài đặt thư viện Test
+# Tạo thư mục ảo .venv nếu chưa có
+if [ ! -d ".venv" ]; then
+    python3 -m venv .venv
+fi
+# Kích hoạt môi trường và cài đặt cocotb, pytest
+source .venv/bin/activate
+pip install --upgrade pip
+pip install cocotb cocotb-test pytest
+
+echo ">>> CÀI ĐẶT HOÀN TẤT. MÔI TRƯỜNG ĐÃ SẴN SÀNG!"
