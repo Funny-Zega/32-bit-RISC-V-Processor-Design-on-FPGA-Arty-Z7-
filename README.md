@@ -1,5 +1,20 @@
 # RV32IM Pipelined Processor 🚀
 
+![Verilog](https://img.shields.io/badge/Language-Verilog-blue?logo=verilog)
+![RISC-V](https://img.shields.io/badge/Architecture-RISC--V-red)
+![Verification](https://img.shields.io/badge/Verification-Cocotb-green?logo=python)
+![Tools](https://img.shields.io/badge/Tools-Verilator%20%7C%20GTKWave-orange)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
+
+## Mục Lục (Table of Contents)
+- [1. Mô Tả Dự Án](#1-mô-tả-dự-án-project-description)
+- [2. Công Nghệ Sử Dụng](#2-công-nghệ-sử-dụng-technologies-used)
+- [3. Tính Năng Kỹ Thuật](#3-tính-năng-kỹ-thuật-nổi-bật-key-features)
+- [4. Cấu Trúc Mã Nguồn](#4-cấu-trúc-mã-nguồn-source-structure)
+- [5. Sơ Đồ Hoạt Động](#5-sơ-đồ-hoạt-động-architecture-flow)
+- [6. Cài Đặt & Mô Phỏng](#6-hướng-dẫn-cài-đặt--mô-phỏng-installation--usage)
+- [7. Kết Quả Kiểm Thử](#7-kết-quả-kiểm-thử-mẫu-sample-test-results)
+
 ## 1. Mô Tả Dự Án (Project Description)
 
 Dự án này là thiết kế hiện thực hóa một bộ vi xử lý **RISC-V 32-bit** hỗ trợ tập lệnh số học **M-Extension** (Nhân/Chia). Vi xử lý được xây dựng dựa trên kiến trúc **Pipeline 5 tầng (5-Stage Pipeline)** cổ điển, tập trung tối ưu hóa hiệu năng thông qua kỹ thuật song song mức lệnh (ILP) và giảm thiểu chu kỳ rỗi (stall).
@@ -48,6 +63,19 @@ Hệ thống tự động đảm bảo tính toàn vẹn dữ liệu:
 | **`DividerUnsignedPipelined.v`** | **Hardware Divider:** Bộ chia pipeline 8 tầng, hỗ trợ chia có dấu và không dấu. |
 | **`cla.v`** | **ALU Adder:** Bộ cộng CLA 32-bit tốc độ cao. |
 | **`mem_initial_contents.hex`** | **Instruction Memory:** Mã máy (Hex) dùng để nạp vào bộ nhớ khi mô phỏng. |
+
+```text
+.
+├── rtl/                        # Mã nguồn thiết kế (Verilog Design)
+│   ├── DatapathPipelined.v     # Core Module (5-Stage Pipeline)
+│   ├── DividerUnsignedPipelined.v # Bộ chia 8 tầng (8-Stage Divider)
+│   └── cla.v                   # Bộ cộng CLA 32-bit
+├── testbench/                  # Mã nguồn kiểm thử (Verification)
+│   ├── testbench.py            # Cocotb Testbench (Python)
+│   └── mem_initial_contents.hex # Memory Image (Hex file)
+├── sim_build/                  # Thư mục chứa file sau khi biên dịch
+├── README.md                   # Tài liệu hướng dẫn
+```
 
 ## 5. Sơ Đồ Hoạt Động (Architecture Flow)
 
@@ -102,7 +130,7 @@ Bạn hãy chạy lần lượt các bước sau trong Terminal (WSL/Ubuntu):
 
     pytest -s testbench.py::runCocotbTestsProcessor
     
-## 7. Kết Quả Kiểm Thử Mẫu (Sample Test Results)
+## 7. Kết Quả (Sample Test Results)
 
 ```markdown
 
@@ -188,4 +216,5 @@ Bạn hãy chạy lần lượt các bước sau trong Terminal (WSL/Ubuntu):
 *******************************************************************************************
 ** TESTS=76 PASS=76 FAIL=0 SKIP=0            75820.08        5.16            14682.63    **
 *******************************************************************************************
+
 
