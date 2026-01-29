@@ -101,15 +101,11 @@ Bạn hãy chạy lần lượt các bước sau trong Terminal (WSL/Ubuntu):
 ##### -(Nếu dòng lệnh hiện chữ (.venv) ở đầu là thành công)
 
     pytest -s testbench.py::runCocotbTestsProcessor
-
+    
+## 7. Kết Quả Kiểm Thử Mẫu (Sample Test Results)
 ```markdown
 ## 7. Kết Quả Kiểm Thử Mẫu (Sample Test Results)
-
-Hệ thống đã vượt qua 77/77 bài kiểm tra, bao gồm các lệnh cơ bản, các trường hợp Hazard, và bài benchmark Dhrystone.
-
 <details>
-<summary><strong>🔻 Bấm vào đây để xem chi tiết Log kiểm thử (Full Report)</strong></summary>
-
 ```text
 *****************************************************************************************
 ** TEST                            STATUS    SIM TIME (ns)   REAL TIME (s)   RATIO (ns/s)**
