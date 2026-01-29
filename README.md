@@ -102,9 +102,13 @@ Bạn hãy chạy lần lượt các bước sau trong Terminal (WSL/Ubuntu):
 
     pytest -s testbench.py::runCocotbTestsProcessor
 
+```markdown
 ## 7. Kết Quả Kiểm Thử Mẫu (Sample Test Results)
 
-Dưới đây là bảng tổng hợp kết quả chạy trên môi trường giả lập. Tất cả **77 testcases** đều vượt qua (PASSED).
+Hệ thống đã vượt qua 77/77 bài kiểm tra, bao gồm các lệnh cơ bản, các trường hợp Hazard, và bài benchmark Dhrystone.
+
+<details>
+<summary><strong>🔻 Bấm vào đây để xem chi tiết Log kiểm thử (Full Report)</strong></summary>
 
 ```text
 *****************************************************************************************
@@ -126,11 +130,65 @@ Dưới đây là bảng tổng hợp kết quả chạy trên môi trường gi
 ** testbench.testBeqTaken          PASS      48.00           0.02            2220.53     **
 ** testbench.testTraceRvLui        PASS      460.00          0.04            12653.11    **
 ** testbench.testTraceRvBeq        PASS      1572.00         0.07            20971.67    **
-** ... (các test load/store khác)  PASS      ...             ...             ...         **
+** testbench.testLoadUse1          PASS      44.00           0.02            1876.38     **
+** testbench.testLoadUse2          PASS      44.00           0.02            2164.98     **
+** testbench.testLoadFalseUse      PASS      40.00           0.02            2021.77     **
+** testbench.testWMData            PASS      40.00           0.02            1990.56     **
+** testbench.testWMAddress         PASS      36.00           0.02            1725.68     **
 ** testbench.testDiv               PASS      68.00           0.02            3396.00     **
+** testbench.test2DivIndependent   PASS      72.00           0.02            3330.69     **
+** testbench.test8DivIndependent   PASS      96.00           0.02            4214.01     **
+** testbench.test2DivDependent     PASS      104.00          0.02            4700.56     **
+** testbench.testDivNonDiv         PASS      72.00           0.02            3558.10     **
+** testbench.testDivUse            PASS      72.00           0.02            3383.99     **
+** testbench.testDivToStoreData    PASS      68.00           0.02            3163.56     **
+** testbench.testDivToStoreAddress PASS      68.00           0.02            3025.85     **
 ** testbench.testTraceRvLw         PASS      1392.00         0.07            20066.73    **
 ** testbench.riscvTest_001         PASS      356.00          0.03            11588.58    **
-** ... (các test riscvTest khác)   PASS      ...             ...             ...         **
+** testbench.riscvTest_002         PASS      460.00          0.03            13186.60    **
+** testbench.riscvTest_003         PASS      2260.00         0.11            20704.30    **
+** testbench.riscvTest_004         PASS      2272.00         0.10            22315.41    **
+** testbench.riscvTest_005         PASS      2268.00         0.10            23191.72    **
+** testbench.riscvTest_006         PASS      2292.00         0.10            21994.08    **
+** testbench.riscvTest_007         PASS      2368.00         0.10            23331.75    **
+** testbench.riscvTest_008         PASS      2344.00         0.10            23518.37    **
+** testbench.riscvTest_009         PASS      2156.00         0.10            22591.49    **
+** testbench.riscvTest_010         PASS      2180.00         0.10            22365.25    **
+** testbench.riscvTest_011         PASS      2148.00         0.10            21237.94    **
+** testbench.riscvTest_012         PASS      1040.00         0.06            18454.85    **
+** testbench.riscvTest_013         PASS      1068.00         0.06            18784.74    **
+** testbench.riscvTest_014         PASS      1212.00         0.06            19504.14    **
+** testbench.riscvTest_015         PASS      1272.00         0.06            20245.28    **
+** testbench.riscvTest_016         PASS      1248.00         0.07            18242.98    **
+** testbench.riscvTest_017         PASS      1076.00         0.05            19915.43    **
+** testbench.riscvTest_018         PASS      1196.00         0.06            19348.36    **
+** testbench.riscvTest_019         PASS      1196.00         0.06            19811.50    **
+** testbench.riscvTest_020         PASS      2156.00         0.09            23334.41    **
+** testbench.riscvTest_021         PASS      1216.00         0.06            19682.09    **
+** testbench.riscvTest_022         PASS      1572.00         0.07            22032.15    **
+** testbench.riscvTest_023         PASS      1716.00         0.08            21934.22    **
+** testbench.riscvTest_024         PASS      1816.00         0.08            22166.26    **
+** testbench.riscvTest_025         PASS      1572.00         0.08            20939.17    **
+** testbench.riscvTest_026         PASS      1672.00         0.08            21759.40    **
+** testbench.riscvTest_027         PASS      1588.00         0.07            21632.99    **
+** testbench.riscvTest_028         PASS      436.00          0.03            13291.47    **
+** testbench.riscvTest_029         PASS      756.00          0.05            16688.15    **
+** testbench.riscvTest_030         PASS      448.00          0.03            13482.57    **
+** testbench.riscvTest_031         PASS      1392.00         0.07            20116.16    **
+** testbench.riscvTest_032         PASS      1336.00         0.07            19840.37    **
+** testbench.riscvTest_033         PASS      1372.00         0.07            19630.52    **
+** testbench.riscvTest_034         PASS      1272.00         0.07            19283.82    **
+** testbench.riscvTest_035         PASS      1272.00         0.07            19137.80    **
+** testbench.riscvTest_036         PASS      2416.00         0.11            22875.57    **
+** testbench.riscvTest_037         PASS      2388.00         0.10            23010.32    **
+** testbench.riscvTest_038         PASS      2176.00         0.10            20999.85    **
+** testbench.riscvTest_039         PASS      2156.00         0.09            23377.30    **
+** testbench.riscvTest_040         PASS      2156.00         0.09            23477.14    **
+** testbench.riscvTest_041         PASS      2156.00         0.09            22915.70    **
+** testbench.riscvTest_042         PASS      2156.00         0.09            23138.57    **
+** testbench.riscvTest_043         PASS      836.00          0.05            16691.07    **
+** testbench.riscvTest_044         PASS      840.00          0.05            17577.43    **
+** testbench.riscvTest_045         PASS      836.00          0.05            16815.29    **
 ** testbench.riscvTest_046         PASS      836.00          0.05            16307.06    **
 *****************************************************************************************
 ** TESTS=76 PASS=76 FAIL=0 SKIP=0            75820.08        5.16            14682.63    **
