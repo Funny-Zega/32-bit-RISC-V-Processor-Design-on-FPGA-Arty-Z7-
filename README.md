@@ -63,44 +63,44 @@ Dữ liệu di chuyển qua các tầng xử lý như sau:
 Bạn hãy chạy lần lượt các bước sau trong Terminal (WSL/Ubuntu):
 ### Bước 1: Cài đặt thư viện hệ thống
 
-sudo apt update
+    sudo apt update
 
-sudo apt install -y autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev ninja-build git cmake libglib2.0-dev libpixman-1-dev python3 python3-pip python3-venv verilator make
+    sudo apt install -y autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev ninja-build git cmake libglib2.0-dev libpixman-1-dev python3 python3-pip python3-venv verilator make
 
 ### Bước 2: Cài đặt RISC-V Toolchain (Lưu ý: Nếu bạn đã cài Toolchain rồi thì bỏ qua bước này. Bước này mất khoảng 30-45 phút)
 
 #### -Tải về tại thư mục Home
-cd ~
-git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git
-cd riscv-gnu-toolchain
+    cd ~
+    git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git
+    cd riscv-gnu-toolchain
 
 #### -Cấu hình và Biên dịch
-./configure --prefix=$HOME/riscv32 --with-arch=rv32im --with-abi=ilp32
-make -j$(nproc)
+    ./configure --prefix=$HOME/riscv32 --with-arch=rv32im --with-abi=ilp32
+    make -j$(nproc)
 
 ### Bước 3: Cấu hình đường dẫn (PATH)
 #### -Thêm vào file cấu hình (chỉ chạy 1 lần duy nhất)
-echo 'export PATH=$HOME/riscv32/bin:$PATH' >> ~/.bashrc
+    echo 'export PATH=$HOME/riscv32/bin:$PATH' >> ~/.bashrc
 
 #### -Cập nhật ngay lập tức
-source ~/.bashrc
+    source ~/.bashrc
 
 ### Bước 4: Cài đặt môi trường Python
 
 #### -Di chuyển vào thư mục dự án của bạn trước khi chạy
-python3 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
-pip install cocotb cocotb-test pytest
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install --upgrade pip
+    pip install cocotb cocotb-test pytest
 
 ### Bước 5: Kích hoạt môi trường và chạy lệnh kiểm tra
 #### -Mở Terminal (WSL) tại thư mục dự án và chạy:
 
-source .venv/bin/activate
+    source .venv/bin/activate
 
 ##### -(Nếu dòng lệnh hiện chữ (.venv) ở đầu là thành công)
 
-pytest -s testbench.py::runCocotbTestsProcessor
+    pytest -s testbench.py::runCocotbTestsProcessor
 
 
 
