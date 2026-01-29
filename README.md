@@ -60,40 +60,53 @@ Dữ liệu di chuyển qua các tầng xử lý như sau:
 
 ## 6. Hướng Dẫn Cài Đặt & Mô Phỏng (Installation & Usage)
 # --- Bắt đầu quy trình cài đặt ---
+Bạn hãy chạy lần lượt các bước sau trong Terminal (WSL/Ubuntu):
+### Bước 1: Cài đặt thư viện hệ thống
 
-# 1. Cập nhật hệ thống và cài đặt tất cả thư viện phụ thuộc cho Toolchain và Verilator
-sudo apt update && sudo apt install -y autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev ninja-build git cmake libglib2.0-dev libpixman-1-dev python3 python3-pip python3-venv verilator make
+sudo apt update
 
-# 2. Tải và biên dịch RISC-V GNU Toolchain (Lưu ý: Bước này tốn nhiều thời gian nhất)
-# Kiểm tra nếu chưa có thư mục toolchain thì mới tải về
-if [ ! -d "riscv-gnu-toolchain" ]; then
-    git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git
-fi
+sudo apt install -y autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev ninja-build git cmake libglib2.0-dev libpixman-1-dev python3 python3-pip python3-venv verilator make
+
+### Bước 2: Cài đặt RISC-V Toolchain (Lưu ý: Nếu bạn đã cài Toolchain rồi thì bỏ qua bước này. Bước này mất khoảng 30-45 phút)
+
+# Tải về tại thư mục Home
+cd ~
+git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git
 cd riscv-gnu-toolchain
-# Cấu hình biên dịch cho kiến trúc RV32IM (Integer + Multiply) và ABI ilp32
+
+# Cấu hình và Biên dịch
 ./configure --prefix=$HOME/riscv32 --with-arch=rv32im --with-abi=ilp32
-# Bắt đầu biên dịch đa luồng
 make -j$(nproc)
-cd .. # Quay trở lại thư mục dự án
 
-# 3. Thêm Toolchain vào biến môi trường (PATH) để hệ thống nhận diện lệnh riscv32-gcc
-# Lệnh này thêm vào file cấu hình để dùng được vĩnh viễn cho các lần sau
-if ! grep -q "$HOME/riscv32/bin" ~/.bashrc; then
-    echo 'export PATH=$HOME/riscv32/bin:$PATH' >> ~/.bashrc
-fi
-export PATH=$HOME/riscv32/bin:$PATH # Cập nhật ngay cho phiên hiện tại
+### Bước 3: Cấu hình đường dẫn (PATH)
+# Thêm vào file cấu hình (chỉ chạy 1 lần duy nhất)
+echo 'export PATH=$HOME/riscv32/bin:$PATH' >> ~/.bashrc
 
-# 4. Kiểm tra cài đặt Toolchain
-riscv32-unknown-elf-gcc --version
+# Cập nhật ngay lập tức
+source ~/.bashrc
 
-# 5. Thiết lập môi trường ảo Python và cài đặt thư viện Test
-# Tạo thư mục ảo .venv nếu chưa có
-if [ ! -d ".venv" ]; then
-    python3 -m venv .venv
-fi
-# Kích hoạt môi trường và cài đặt cocotb, pytest
+### Bước 4: Cài đặt môi trường Python
+
+# Di chuyển vào thư mục dự án của bạn trước khi chạy
+python3 -m venv .venv
 source .venv/bin/activate
 pip install --upgrade pip
 pip install cocotb cocotb-test pytest
 
-echo ">>> CÀI ĐẶT HOÀN TẤT. MÔI TRƯỜNG ĐÃ SẴN SÀNG!"
+Hướng dẫn Chạy Test (Hằng ngày)
+Sau khi đã cài đặt môi trường thành công, đây là các bước để chạy kiểm thử mỗi khi bạn sửa code Verilog.
+
+### Bước 5: Kích hoạt môi trường và chạy lệnh kiểm tra
+Mở Terminal (WSL) tại thư mục dự án và chạy:
+
+source .venv/bin/activate
+
+(Nếu dòng lệnh hiện chữ (.venv) ở đầu là thành công)
+
+pytest -s testbench.py::runCocotbTestsProcessor
+
+
+
+
+
+
