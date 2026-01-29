@@ -26,9 +26,9 @@ Bộ xử lý chia nhỏ quá trình thực thi lệnh thành 5 giai đoạn đ�
 
 ### 3.2. Bộ Chia Pipeline 8 Tầng (8-Stage Pipelined Divider)
 Thay vì sử dụng bộ chia đơn chu kỳ (gây trễ lớn) hoặc chặn pipeline (gây stall lâu), dự án tích hợp một Divider Unit riêng biệt:
-* [cite_start]**Cấu trúc:** 8 tầng pipeline hoạt động song song với luồng xử lý chính [cite: 242-248].
-* [cite_start]**Thuật toán:** Sử dụng phương pháp dịch-trừ (Shift-Subtract) với 4 lần lặp mỗi tầng (4 iterations/stage) để cân bằng giữa diện tích và tốc độ [cite: 250-252].
-* [cite_start]**Shadow Register:** Datapath sử dụng một chuỗi thanh ghi bóng để theo dõi lệnh chia và xử lý xung đột ghi (Writeback Hazard) chính xác tại chu kỳ thứ 8 [cite: 177-190].
+* **Cấu trúc:** 8 tầng pipeline hoạt động song song với luồng xử lý chính [cite: 242-248].
+* **Thuật toán:** Sử dụng phương pháp dịch-trừ (Shift-Subtract) với 4 lần lặp mỗi tầng (4 iterations/stage) để cân bằng giữa diện tích và tốc độ [cite: 250-252].
+* **Shadow Register:** Datapath sử dụng một chuỗi thanh ghi bóng để theo dõi lệnh chia và xử lý xung đột ghi (Writeback Hazard) chính xác tại chu kỳ thứ 8 [cite: 177-190].
 
 ### 3.3. Bộ Cộng Nhanh (Carry Lookahead Adder - CLA)
 Sử dụng kiến trúc cộng nhìn trước số nhớ (CLA) 32-bit thay vì Ripple Carry Adder truyền thống. [cite_start]Kỹ thuật này giảm đáng kể đường trễ (Critical Path) tại tầng Execute, cho phép vi xử lý hoạt động ở tần số xung nhịp cao hơn [cite: 1-25].
