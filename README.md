@@ -1,4 +1,4 @@
-# RV32IM Pipelined Processor 🚀
+# RV32IM Pipelined Processor 
 
 ![Verilog](https://img.shields.io/badge/Language-Verilog-blue?logo=verilog)
 ![RISC-V](https://img.shields.io/badge/Architecture-RISC--V-red)
@@ -7,130 +7,129 @@
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 ## Mục Lục (Table of Contents)
-- [1. Mô Tả Dự Án](#1-mô-tả-dự-án-project-description)
-- [2. Công Nghệ Sử Dụng](#2-công-nghệ-sử-dụng-technologies-used)
-- [3. Tính Năng Kỹ Thuật](#3-tính-năng-kỹ-thuật-nổi-bật-key-features)
-- [4. Cấu Trúc Mã Nguồn](#4-cấu-trúc-mã-nguồn-source-structure)
-- [5. Sơ Đồ Hoạt Động](#5-sơ-đồ-hoạt-động-architecture-flow)
-- [6. Cài Đặt & Mô Phỏng](#6-hướng-dẫn-cài-đặt--mô-phỏng-installation--usage)
-- [7. Kết Quả Kiểm Thử](#7-kết-quả-kiểm-thử-mẫu-sample-test-results)
+- [1. Project Description](#1-mô-tả-dự-án-project-description)
+- [2. Technologies Used](#2-công-nghệ-sử-dụng-technologies-used)
+- [3. Key Features](#3-tính-năng-kỹ-thuật-nổi-bật-key-features)
+- [4. Source Structure](#4-cấu-trúc-mã-nguồn-source-structure)
+- [5. Architecture Flow](#5-sơ-đồ-hoạt-động-architecture-flow)
+- [6. Installation & Usage](#6-hướng-dẫn-cài-đặt--mô-phỏng-installation--usage)
+- [7. Sample Test Results](#7-kết-quả-kiểm-thử-mẫu-sample-test-results)
 
-## 1. Mô Tả Dự Án (Project Description)
+## 1. Project Description
 
-Dự án này là thiết kế hiện thực hóa một bộ vi xử lý **RISC-V 32-bit** hỗ trợ tập lệnh số học **M-Extension** (Nhân/Chia). Vi xử lý được xây dựng dựa trên kiến trúc **Pipeline 5 tầng (5-Stage Pipeline)** cổ điển, tập trung tối ưu hóa hiệu năng thông qua kỹ thuật song song mức lệnh (ILP) và giảm thiểu chu kỳ rỗi (stall).
+This project is the hardware implementation of a **32-bit RISC-V** microprocessor supporting the **M-Extension** (Multiply/Divide) arithmetic instruction set. The processor is built upon a classic **5-stage pipeline** architecture, focusing on performance optimization through Instruction-Level Parallelism (ILP) and minimizing stall cycles.
 
-Điểm đặc biệt của thiết kế là việc tích hợp các kỹ thuật xử lý xung đột (Hazard Handling) tiên tiến và một **bộ chia phần cứng đa chu kỳ (Multi-cycle Hardware Divider)** hoạt động song song với pipeline chính.
+A distinctive feature of this design is the integration of advanced Hazard Handling techniques and a **multi-cycle hardware divider** operating in parallel with the main pipeline.
 
-* **Kiến trúc:** RISC-V 32-bit (RV32IM).
-* **Pipeline:** 5 tầng (Fetch, Decode, Execute, Memory, Writeback).
-* **Ngôn ngữ thiết kế:** Verilog HDL.
-* **Mục tiêu:** Nghiên cứu kiến trúc máy tính chuyên sâu, tối ưu hóa thông lượng (Throughput) và diện tích phần cứng.
+* **Architecture:** 32-bit RISC-V (RV32IM).
+* **Pipeline:** 5 stages (Fetch, Decode, Execute, Memory, Writeback).
+* **Design Language:** Verilog HDL.
+* **Objective:** In-depth study of computer architecture, optimizing throughput and hardware area.
 
-## 2. Công Nghệ Sử Dụng (Technologies Used)
+## 2. Technologies Used
 
-* **Ngôn ngữ:** Verilog HDL (IEEE 1364-2005).
-* **Kiến trúc tập lệnh (ISA):** RISC-V User-Level ISA (RV32IM).
-* **Công cụ mô phỏng:** Icarus Verilog, ModelSim, hoặc Vivado.
-* **Công cụ phân tích sóng:** GTKWave.
+* **Language:** Verilog HDL (IEEE 1364-2005).
+* **Instruction Set Architecture (ISA):** RISC-V User-Level ISA (RV32IM).
+* **Simulation Tools:** Icarus Verilog, ModelSim, or Vivado.
+* **Waveform Viewer:** GTKWave.
 * **Editor:** VS Code (Verilog extension).
 
-## 3. Tính Năng Kỹ Thuật Nổi Bật (Key Features)
+## 3. Key Features
 
-### 3.1. Đường Ống 5 Tầng (5-Stage Pipeline)
-Bộ xử lý chia nhỏ quá trình thực thi lệnh thành 5 giai đoạn độc lập: **IF, ID, EX, MEM, WB**. [cite_start]Điều này cho phép xử lý chồng gối nhiều lệnh cùng lúc để tăng tối đa thông lượng xử lý [cite: 26, 85-227].
+### 3.1. 5-Stage Pipeline
+The processor breaks down instruction execution into 5 independent stages: **IF, ID, EX, MEM, WB**. This allows for the overlapping execution of multiple instructions simultaneously to maximize processing throughput.
 
-### 3.2. Bộ Chia Pipeline 8 Tầng (8-Stage Pipelined Divider)
-Thay vì sử dụng bộ chia đơn chu kỳ (gây trễ lớn) hoặc chặn pipeline (gây stall lâu), dự án tích hợp một Divider Unit riêng biệt:
-* **Cấu trúc:** 8 tầng pipeline hoạt động song song với luồng xử lý chính [cite: 242-248].
-* **Thuật toán:** Sử dụng phương pháp dịch-trừ (Shift-Subtract) với 4 lần lặp mỗi tầng (4 iterations/stage) để cân bằng giữa diện tích và tốc độ [cite: 250-252].
-* **Shadow Register:** Datapath sử dụng một chuỗi thanh ghi bóng để theo dõi lệnh chia và xử lý xung đột ghi (Writeback Hazard) chính xác tại chu kỳ thứ 8 [cite: 177-190].
+### 3.2. 8-Stage Pipelined Divider
+Instead of using a single-cycle divider (causing significant delay) or stalling the pipeline (causing long stalls), the project integrates a separate Divider Unit:
+* **Structure:** 8-stage pipeline operating in parallel with the main processing flow.
+* **Algorithm:** Utilizes the Shift-Subtract method with 4 iterations per stage to balance area and speed.
+* **Shadow Register:** The datapath uses a chain of shadow registers to track the divide instruction and accurately resolve writeback hazards at the 8th cycle.
 
-### 3.3. Bộ Cộng Nhanh (Carry Lookahead Adder - CLA)
-Sử dụng kiến trúc cộng nhìn trước số nhớ (CLA) 32-bit thay vì Ripple Carry Adder truyền thống. [cite_start]Kỹ thuật này giảm đáng kể đường trễ (Critical Path) tại tầng Execute, cho phép vi xử lý hoạt động ở tần số xung nhịp cao hơn [cite: 1-25].
+### 3.3. Carry Lookahead Adder (CLA)
+Utilizes a 32-bit Carry Lookahead Adder (CLA) architecture instead of the traditional Ripple Carry Adder. This technique significantly reduces the critical path at the Execute stage, allowing the microprocessor to operate at a higher clock frequency.
 
-### 3.4. Hệ Thống Xử Lý Xung Đột (Advanced Hazard Unit)
-Hệ thống tự động đảm bảo tính toàn vẹn dữ liệu:
-* **Data Forwarding (Bypass):** Chuyển dữ liệu từ tầng MEM/WB quay ngược lại EX ngay lập tức, giải quyết Data Hazard mà không cần dừng pipeline [cite: 142-152].
-* **Load-Use Hazard Detection:** Tự động chèn 1 chu kỳ Stall khi phát hiện lệnh sau phụ thuộc vào dữ liệu từ lệnh Load trước đó.
-* **Control Hazard Flushing:** Tự động hủy (Flush) các lệnh sai trong đường ống ngay lập tức khi gặp lệnh rẽ nhánh (Branch/Jump) [cite: 82, 89-90].
-* **Structural Hazard Handling:** Cơ chế trọng tài (arbiter) ngăn xung đột khi lệnh Chia và lệnh thường cùng muốn ghi vào Register File [cite: 76-81].
+### 3.4. Advanced Hazard Unit
+The system automatically ensures data integrity:
+* **Data Forwarding (Bypass):** Forwards data from the MEM/WB stages back to the EX stage immediately, resolving data hazards without stalling the pipeline.
+* **Load-Use Hazard Detection:** Automatically inserts a 1-cycle stall when it detects a subsequent instruction dependent on data from a preceding Load instruction.
+* **Control Hazard Flushing:** Automatically flushes incorrect instructions in the pipeline immediately upon encountering a branch/jump instruction.
+* **Structural Hazard Handling:** An arbiter mechanism prevents conflicts when both a divide instruction and a regular instruction attempt to write to the Register File simultaneously.
 
-## 4. Cấu Trúc Mã Nguồn (Source Structure)
+## 4. Source Structure
 
-| Tên File | Chức năng |
+| File Name | Description |
 | :--- | :--- |
-| **`DatapathPipelined.v`** | **Core Module:** Chứa logic 5 tầng pipeline, Hazard Unit, Forwarding Unit và Register File. |
-| **`DividerUnsignedPipelined.v`** | **Hardware Divider:** Bộ chia pipeline 8 tầng, hỗ trợ chia có dấu và không dấu. |
-| **`cla.v`** | **ALU Adder:** Bộ cộng CLA 32-bit tốc độ cao. |
-| **`mem_initial_contents.hex`** | **Instruction Memory:** Mã máy (Hex) dùng để nạp vào bộ nhớ khi mô phỏng. |
+| **`DatapathPipelined.v`** | **Core Module:** Contains the 5-stage pipeline logic, Hazard Unit, Forwarding Unit, and Register File. |
+| **`DividerUnsignedPipelined.v`** | **Hardware Divider:** 8-stage pipelined divider, supporting signed and unsigned division. |
+| **`cla.v`** | **ALU Adder:** High-speed 32-bit CLA adder. |
+| **`mem_initial_contents.hex`** | **Instruction Memory:** Machine code (Hex) used to load into memory during simulation. |
 
 ```text
 .
-├── rtl/                        # Mã nguồn thiết kế (Verilog Design)
+├── rtl/                        # Design source code (Verilog Design)
 │   ├── DatapathPipelined.v     # Core Module (5-Stage Pipeline)
-│   ├── DividerUnsignedPipelined.v # Bộ chia 8 tầng (8-Stage Divider)
-│   └── cla.v                   # Bộ cộng CLA 32-bit
-├── testbench/                  # Mã nguồn kiểm thử (Verification)
+│   ├── DividerUnsignedPipelined.v # 8-Stage Divider
+│   └── cla.v                   # 32-bit CLA Adder
+├── testbench/                  # Verification source code
 │   ├── testbench.py            # Cocotb Testbench (Python)
 │   └── mem_initial_contents.hex # Memory Image (Hex file)
-├── sim_build/                  # Thư mục chứa file sau khi biên dịch
-├── README.md                   # Tài liệu hướng dẫn
+├── sim_build/                  # Compiled files directory
+├── README.md                   # Documentation
 ```
+## 5. Architecture Flow
 
-## 5. Sơ Đồ Hoạt Động (Architecture Flow)
+Data moves through the processing stages as follows:
+1.  **IF (Fetch):** PC points to the instruction address in the Instruction Memory.
+2.  **ID (Decode):** Decodes the instruction and reads the Register File. If it is a Divide instruction, sends a signal to the Divider Unit.
+3.  **EX (Execute):** ALU (using CLA) performs computations, or the Divider begins processing. The Forwarding Unit provides the latest data in case of hazards.
+4.  **MEM (Memory):** Accesses the Data Memory (for Load/Store instructions).
+5.  **WB (Writeback):** A Mux selects the result from the ALU, Memory, or Divider Unit to write back into the Register File.
 
-Dữ liệu di chuyển qua các tầng xử lý như sau:
-1.  **IF (Fetch):** PC trỏ tới địa chỉ lệnh trong Instruction Memory.
-2.  **ID (Decode):** Giải mã lệnh, đọc Register File. Nếu là lệnh Chia, gửi tín hiệu sang Divider Unit.
-3.  **EX (Execute):** ALU (dùng CLA) tính toán hoặc Divider bắt đầu xử lý. Forwarding Unit cấp dữ liệu mới nhất nếu có xung đột.
-4.  **MEM (Memory):** Truy cập Data Memory (cho lệnh Load/Store).
-5.  **WB (Writeback):** Mux lựa chọn kết quả từ ALU, Memory hoặc Divider Unit để ghi lại vào Register File.
-
-## 6. Hướng Dẫn Cài Đặt & Mô Phỏng (Installation & Usage)
-# --- Bắt đầu quy trình cài đặt ---
-Bạn hãy chạy lần lượt các bước sau trong Terminal (WSL/Ubuntu):
-### Bước 1: Cài đặt thư viện hệ thống
+## 6. Installation & Usage
+# --- Begin installation process ---
+Running the following steps sequentially in your Terminal (WSL/Ubuntu):
+### Step 1: Installing system libraries
 
     sudo apt update
 
     sudo apt install -y autoconf automake autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev ninja-build git cmake libglib2.0-dev libpixman-1-dev python3 python3-pip python3-venv verilator make
 
-### Bước 2: Cài đặt RISC-V Toolchain (Lưu ý: Nếu bạn đã cài Toolchain rồi thì bỏ qua bước này. Bước này mất khoảng 30-45 phút)
+### Step 2: Install the RISC-V Toolchain (Note: If you have already installed the Toolchain, skip this step. This step takes approximately 30-45 minutes)
 
-#### -Tải về tại thư mục Home
+#### -Downloading from the Home folder.
     cd ~
     git clone https://github.com/riscv-collab/riscv-gnu-toolchain.git
     cd riscv-gnu-toolchain
 
-#### -Cấu hình và Biên dịch
+#### -Configuration and Compilation
     ./configure --prefix=$HOME/riscv32 --with-arch=rv32im --with-abi=ilp32
     make -j$(nproc)
 
-### Bước 3: Cấu hình đường dẫn (PATH)
-#### -Thêm vào file cấu hình (chỉ chạy 1 lần duy nhất)
+### Step 3: Configure the path
+#### -Add this to the configuration file (run only once).
     echo 'export PATH=$HOME/riscv32/bin:$PATH' >> ~/.bashrc
 
-#### -Cập nhật ngay lập tức
+#### -Update immediately
     source ~/.bashrc
 
-### Bước 4: Cài đặt môi trường Python
+### Step 4: Set up the Python environment
 
-#### -Di chuyển vào thư mục dự án của bạn trước khi chạy
+#### -Navigating to your project folder before running.
     python3 -m venv .venv
     source .venv/bin/activate
     pip install --upgrade pip
     pip install cocotb cocotb-test pytest
 
-### Bước 5: Kích hoạt môi trường và chạy lệnh kiểm tra
-#### -Mở Terminal (WSL) tại thư mục dự án và chạy:
+### Step 5: Activate the environment and run the test command.
+#### -Opening Terminal (WSL) in your project directory and run:
 
     source .venv/bin/activate
 
-##### -(Nếu dòng lệnh hiện chữ (.venv) ở đầu là thành công)
+##### -(If the command line starts with "(.venv)", it's successful.)
 
     pytest -s testbench.py::runCocotbTestsProcessor
     
-## 7. Kết Quả (Sample Test Results)
+## 7. Sample Test Results
 
 ```markdown
 
