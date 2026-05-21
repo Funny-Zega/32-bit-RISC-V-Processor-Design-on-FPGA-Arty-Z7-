@@ -2,6 +2,7 @@
 // -------------------------------------------------------------------------
 // MAIN MODULE: DIVIDER 8 STAGES PIPELINE
 // -------------------------------------------------------------------------
+
 module DividerUnsignedPipelined (
     input  wire        clk, 
     input  wire        rst,
