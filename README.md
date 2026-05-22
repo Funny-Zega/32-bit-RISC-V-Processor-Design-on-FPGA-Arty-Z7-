@@ -6,7 +6,7 @@
 ![Tools](https://img.shields.io/badge/Tools-Verilator%20%7C%20GTKWave-orange)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-## Mục Lục (Table of Contents)
+## Table of Contents
 - [1. Project Description](#1-mô-tả-dự-án-project-description)
 - [2. Technologies Used](#2-công-nghệ-sử-dụng-technologies-used)
 - [3. Key Features](#3-tính-năng-kỹ-thuật-nổi-bật-key-features)
